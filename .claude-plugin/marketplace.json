@@ -16,7 +16,7 @@
         "url": "https://github.com/jsvisa/evm-decoder-skill.git"
       },
       "description": "Decode EVM transaction calldata, event logs, and fetch verified contract ABIs across any EVM chain via eth-decoder.vercel.app",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "strict": true
     }
   ]
