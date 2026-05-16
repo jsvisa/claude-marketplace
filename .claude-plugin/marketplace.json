@@ -1,0 +1,23 @@
+{
+  "name": "jsvisa-marketplace",
+  "owner": {
+    "name": "jsvisa",
+    "email": ""
+  },
+  "metadata": {
+    "description": "Claude Code skills and plugins by jsvisa",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "evm-decoder",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jsvisa/evm-decoder-skill.git"
+      },
+      "description": "Decode EVM transaction calldata, event logs, and fetch verified contract ABIs across any EVM chain via eth-decoder.vercel.app",
+      "version": "1.0.0",
+      "strict": true
+    }
+  ]
+}
