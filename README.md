@@ -24,6 +24,20 @@ Decode EVM transaction calldata, event logs, and fetch verified contract ABIs ac
 
 ---
 
+### solexplain
+
+Explain Solana transactions in human-readable form — programs involved, SOL/token transfers, and protocol-specific decoded actions.
+
+```bash
+/plugin install solexplain@jsvisa-marketplace
+```
+
+**What you get:** Ask Claude to explain a Solana transaction signature — it uses `solexplain` to decode programs, transfers, and protocol details (Jupiter, Raydium, Orca, Drift, Pump.fun, Wormhole, and more).
+
+→ [jsvisa/solexplain](https://github.com/jsvisa/solexplain)
+
+---
+
 ## Adding more plugins
 
 To add a new plugin, create a repo with this structure:
