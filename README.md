@@ -38,6 +38,20 @@ Explain Solana transactions in human-readable form — programs involved, SOL/to
 
 ---
 
+### debank
+
+Fetch a wallet's full DeFi portfolio from DeBank — total balance, token holdings, and protocol positions across all chains.
+
+```bash
+/plugin install debank@jsvisa-marketplace
+```
+
+**What you get:** Ask Claude "show me the portfolio of 0x..." — it opens DeBank in a browser, waits for data to render, and returns total balance, tokens, and protocol positions.
+
+→ [jsvisa/debank-skill](https://github.com/jsvisa/debank-skill)
+
+---
+
 ## Adding more plugins
 
 To add a new plugin, create a repo with this structure:
