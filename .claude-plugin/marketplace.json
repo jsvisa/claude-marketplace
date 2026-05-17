@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Claude Code skills and plugins by jsvisa",
-    "version": "1.4.0"
+    "version": "1.4.1"
   },
   "plugins": [
     {
@@ -16,7 +16,7 @@
         "url": "https://github.com/jsvisa/evm-decoder-skill.git"
       },
       "description": "Decode EVM transaction calldata, event logs, and fetch verified contract ABIs across any EVM chain via eth-decoder.vercel.app",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "strict": true
     },
     {
@@ -26,7 +26,7 @@
         "url": "https://github.com/jsvisa/solexplain.git"
       },
       "description": "Explain Solana transactions in human-readable form — programs, SOL/token transfers, and protocol-specific actions (Jupiter, Raydium, Orca, Drift, Pump.fun, and more)",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "strict": true
     },
     {
@@ -36,7 +36,7 @@
         "url": "https://github.com/jsvisa/debank-skill.git"
       },
       "description": "Fetch a wallet's DeFi portfolio from DeBank — total balance, token holdings, and protocol positions across all chains. Supports CSV export (simple or full with token addresses, adapter IDs, controllers, and on-chain metadata via API interception)",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "strict": true
     }
   ]
