@@ -1,0 +1,57 @@
+name: Sync marketplace plugin versions
+
+on:
+  schedule:
+    - cron: '7 9 * * *'  # daily at 09:07 UTC
+  workflow_dispatch:
+
+jobs:
+  sync-versions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync plugin versions and bump marketplace metadata
+        run: |
+          set -e
+          MARKETPLACE_FILE=".claude-plugin/marketplace.json"
+          CHANGED=false
+
+          while IFS=$'\t' read -r plugin_name plugin_url current_version; do
+            repo=$(echo "$plugin_url" | sed 's|https://github.com/||; s|\.git$||')
+            latest=$(gh api "repos/${repo}/tags" --jq 'if length > 0 then first | .name | ltrimstr("v") else "" end')
+
+            if [ -n "$latest" ] && [ "$latest" != "$current_version" ]; then
+              echo "Updating $plugin_name: $current_version -> $latest"
+              tmp=$(mktemp)
+              jq --arg name "$plugin_name" --arg ver "$latest" \
+                '(.plugins[] | select(.name == $name) | .version) = $ver' \
+                "$MARKETPLACE_FILE" > "$tmp" && mv "$tmp" "$MARKETPLACE_FILE"
+              CHANGED=true
+            else
+              echo "$plugin_name is up to date ($current_version)"
+            fi
+          done < <(jq -r '.plugins[] | [.name, .source.url, .version] | @tsv' "$MARKETPLACE_FILE")
+
+          if [ "$CHANGED" = "true" ]; then
+            current_meta=$(jq -r '.metadata.version' "$MARKETPLACE_FILE")
+            major=$(echo "$current_meta" | cut -d. -f1)
+            minor=$(echo "$current_meta" | cut -d. -f2)
+            patch=$(echo "$current_meta" | cut -d. -f3)
+            new_meta="${major}.${minor}.$((patch + 1))"
+
+            tmp=$(mktemp)
+            jq --arg v "$new_meta" '.metadata.version = $v' "$MARKETPLACE_FILE" > "$tmp" && mv "$tmp" "$MARKETPLACE_FILE"
+
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add "$MARKETPLACE_FILE"
+            git commit -m "chore: sync plugin versions (marketplace ${new_meta})"
+            git push
+          else
+            echo "All plugin versions are up to date, nothing to commit."
+          fi
