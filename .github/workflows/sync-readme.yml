@@ -1,0 +1,81 @@
+name: Sync README plugin list
+
+on:
+  workflow_run:
+    workflows: ["Sync marketplace plugin versions"]
+    types: [completed]
+  push:
+    paths:
+      - '.claude-plugin/marketplace.json'
+  workflow_dispatch:
+
+jobs:
+  sync-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate plugins section in README.md
+        run: |
+          set -e
+          python3 - <<'EOF'
+          import json, re
+
+          with open('.claude-plugin/marketplace.json') as f:
+              data = json.load(f)
+
+          blocks = []
+          for p in data['plugins']:
+              name    = p['name']
+              desc    = p['description']
+              version = p['version']
+              url     = p['source']['url'].removesuffix('.git')
+              repo    = url.removeprefix('https://github.com/')
+
+              blocks.append(
+                  f"### {name} `v{version}`\n\n"
+                  f"{desc}\n\n"
+                  f"```bash\n/plugin install {name}@jsvisa-marketplace\n```\n\n"
+                  f"→ [{repo}]({url})\n\n---"
+              )
+
+          new_section = (
+              "<!-- plugins-start -->\n"
+              + "\n\n".join(blocks)
+              + "\n<!-- plugins-end -->"
+          )
+
+          with open('README.md') as f:
+              content = f.read()
+
+          updated = re.sub(
+              r'<!-- plugins-start -->.*?<!-- plugins-end -->',
+              new_section,
+              content,
+              flags=re.DOTALL,
+          )
+
+          if updated == content:
+              print("README.md is already up to date.")
+          else:
+              with open('README.md', 'w') as f:
+                  f.write(updated)
+              print("README.md updated.")
+              open('.readme_changed', 'w').close()
+          EOF
+
+      - name: Commit updated README
+        run: |
+          if [ ! -f .readme_changed ]; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "docs: sync README plugin list from marketplace.json"
+          git push

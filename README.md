@@ -10,47 +10,55 @@ Claude Code plugin marketplace by [jsvisa](https://github.com/jsvisa).
 
 ## Available plugins
 
-### evm-decoder
+<!-- plugins-start -->
+### evm-decoder `v1.1.4`
 
-Decode EVM transaction calldata, event logs, and fetch verified contract ABIs across any EVM chain.
+Decode EVM transaction calldata, event logs, and fetch verified contract ABIs across any EVM chain via eth-decoder.vercel.app
 
 ```bash
 /plugin install evm-decoder@jsvisa-marketplace
 ```
 
-**What you get:** Ask Claude to decode a transaction, an event log, or fetch a contract ABI — it calls [eth-decoder.vercel.app](https://eth-decoder.vercel.app) automatically.
-
 → [jsvisa/evm-decoder-skill](https://github.com/jsvisa/evm-decoder-skill)
 
 ---
 
-### solexplain
+### solexplain `v0.2.3`
 
-Explain Solana transactions in human-readable form — programs involved, SOL/token transfers, and protocol-specific decoded actions.
+Explain Solana transactions in human-readable form — programs, SOL/token transfers, and protocol-specific actions (Jupiter, Raydium, Orca, Drift, Pump.fun, and more)
 
 ```bash
 /plugin install solexplain@jsvisa-marketplace
 ```
 
-**What you get:** Ask Claude to explain a Solana transaction signature — it uses `solexplain` to decode programs, transfers, and protocol details (Jupiter, Raydium, Orca, Drift, Pump.fun, Wormhole, and more).
-
 → [jsvisa/solexplain](https://github.com/jsvisa/solexplain)
 
 ---
 
-### debank
+### debank `v1.1.1`
 
-Fetch a wallet's full DeFi portfolio from DeBank — total balance, token holdings, and protocol positions across all chains.
+Fetch a wallet's DeFi portfolio from DeBank — total balance, token holdings, and protocol positions across all chains. Supports CSV export (simple or full with token addresses, adapter IDs, controllers, and on-chain metadata via API interception)
 
 ```bash
 /plugin install debank@jsvisa-marketplace
 ```
 
-**What you get:** Ask Claude "show me the portfolio of 0x..." — it opens DeBank in a browser, waits for data to render, and returns total balance, tokens, and protocol positions.
-
 → [jsvisa/debank-skill](https://github.com/jsvisa/debank-skill)
 
 ---
+
+### etherscan `v1.0.0`
+
+Query contract creation info, verified ABIs, source code, account balances, transaction history, token transfers, and block lookups on Ethereum and EVM chains via Etherscan v2 API. Uses curl and jq with multi-key rotation support.
+
+```bash
+/plugin install etherscan@jsvisa-marketplace
+```
+
+→ [jsvisa/etherscan-skill](https://github.com/jsvisa/etherscan-skill)
+
+---
+<!-- plugins-end -->
 
 ## Adding more plugins
 
